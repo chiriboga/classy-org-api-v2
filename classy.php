@@ -44,10 +44,10 @@ try {
 
 // Now use that token to make all subsequent requests
 // Fetch a campaign
-function getclassy($accessToken, $client){
+function getCampaign($accessToken, $client, $id){
   $response = $client->request(
       'GET',
-      'https://api.classy.org/2.0/campaigns/91466',
+      'https://api.classy.org/2.0/campaigns/'.$id,
       [
           'headers' => [
               'Authorization' => "Bearer $accessToken"
@@ -58,4 +58,4 @@ function getclassy($accessToken, $client){
   echo $response->getBody();
 }
 
-getclassy($accessToken, $client);
+getCampaign($accessToken,$client,91466);
