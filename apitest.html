@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>API test</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+    .fundraiser_leader h1,.fundraiser_leader h1 a{font-size:18px;margin:0;padding:0;font-weight:400;}
+    .fundraiser_leader p{color:#a4aaba;}
+    </style>
+    <script>
+    $(function() {
+        getInfo('XXXXXXXXX');//category_id
+    });
+ 
+    function getInfo(leader_type){
+        var get_info_file = '/location/of/json-results/leaders-' + leader_type + '.json';
+        var container_id = "." + leader_type;
+        $.getJSON(get_info_file, function( datagroup ) {
+            var items = [];
+            $.each( datagroup.data, function( key, val ) {
+                var logo_url = (val.logo_url) ? val.logo_url : 'https://www-cdn.classy.org/dist/799/global/images/individual_default_image.png';
+                var percent_to_goal = val.percent_to_goal;
+                var percentage = (val.percent_to_goal != 100) ? percent_to_goal.toPrecision(2) : '100';
+                if( (val.logo_url) && (percentage != 100) ){
+                    items.push("<div class='row fundraiser_leader'><div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'><a href='http://YOUR_URL/" + val.id + "' target='_blank'><img class='img-rounded img-responsive' src='" + logo_url + "' alt='Fund Raiser'></a></div><div class='col-xs-12 col-sm-8 col-md-8 col-lg-8'><h1><a href='http://YOUR_URL/" + val.id + "' target='_blank'>" + val.title + "</a></h1><p>$" + val.total_raised + " of $" + val.goal + "</p><p>" + val.intro_text + "</p><div class='progress'><div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='" + percentage + "' aria-valuemin='0' aria-valuemax='100' style='width: " + percentage + "%'><span class='sr-only'>" + percentage + "% Complete (success)</span>" + percentage + "%</div></div></div></div>");
+                }
+                return false;
+            });
+            $( "<div/>", {
+                "class": "clearfix",
+                html: items.join( "" )
+            }).appendTo( container_id );
+        });
+    }     
+    </script>
+  </head>
+  <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h3>Leader from Category</h3>
+                <div class="XXXXXXXXX"></div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
